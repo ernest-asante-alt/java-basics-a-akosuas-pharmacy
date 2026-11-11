@@ -1,3 +1,4 @@
+
 import java.math.BigDecimal;
 
 import pharmacy.model.Customer;
@@ -14,17 +15,19 @@ public class PharmacyTracker {
 
         Pharmacy pharmacy = new Pharmacy("Akosua's Pharmacy");
 
-        // Create medications.
+        // Create medications with their reorder levels.
         Medication paracetamol = new Medication(
                 "Paracetamol 500mg",
                 new BigDecimal("12.50"),
                 100,
+                30,
                 new OTCPolicy()
         );
 
         Medication amoxicillin = new Medication(
                 "Amoxicillin 250mg",
                 new BigDecimal("30.00"),
+                40,
                 40,
                 new PrescriptionPolicy()
         );

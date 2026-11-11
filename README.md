@@ -21,6 +21,7 @@ The application allows the pharmacy to:
 - Restock medications.
 - Keep a record of dispensing and restocking transactions.
 - Generate a pharmacy stock and transaction report.
+- Identify medicines that have reached or fallen below their reorder levels.
 
 The design also allows controlled substances to be introduced with their own dispensing requirements.
 
@@ -41,6 +42,8 @@ I made the following improvements:
 5. **Improved medication categories:** I replaced category strings with enums and introduced dispensing policies to make it easier to add new medication categories.
 
 6. **Separated responsibilities:** I separated medication, customer, pricing, dispensing and reporting responsibilities into different classes.
+
+7. **Low-stock warnings:** I introduced reorder levels for medications so the pharmacy can identify medicines that need restocking before they run out.
 
 ## Project Structure
 
@@ -74,12 +77,12 @@ src/
 ### Main Classes and Their Responsibilities
 
 - **PharmacyTracker:** Starts the application and creates the sample medications and customers.
-- **Medication:** Stores medication details, price, stock and dispensing policy.
+- **Medication:** Stores medication details, price, stock, reorder level and dispensing policy.
 - **Customer:** Stores customer details and dispensing history.
 - **Transaction:** Represents a dispensing or restocking transaction.
 - **Pharmacy:** Manages medications, customers, dispensing, restocking and transactions.
 - **PricingService:** Calculates medication costs and registered-customer discounts.
-- **PharmacyReport:** Generates stock and transaction reports.
+- **PharmacyReport:** Generates stock and transaction reports, including low-stock warnings.
 - **DispensingPolicy:** Defines the rules that different medication categories must follow.
 
 ## Design Decisions
@@ -105,6 +108,14 @@ I kept the original valid dispensing and restocking behaviour, including:
 - Customer history and transaction recording.
 
 One important change is that the application now rejects dispensing requests when there is insufficient stock. This prevents the pharmacy from recording sales for quantities it does not have.
+
+## Additional Improvement: Low-Stock Warnings
+
+The original application displayed stock quantities but did not have reorder levels or low-stock warnings.
+
+I added reorder levels to medications. When a medication's available stock reaches or falls below its reorder level, the application displays a warning.
+
+I chose this improvement because it helps the pharmacy identify medicines that need restocking before they run out. This can help reduce stock shortages and improve medicine availability for customers.
 
 ## Running the Application
 

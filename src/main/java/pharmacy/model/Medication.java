@@ -1,10 +1,11 @@
-package pharmacy.model;
 
-import pharmacy.policy.DispensingPolicy;
+package pharmacy.model;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import pharmacy.policy.DispensingPolicy;
 
 public class Medication {
 
@@ -14,12 +15,26 @@ public class Medication {
     private final String name;
     private final BigDecimal price;
     private int stock;
+    private final int reorderLevel;
     private final DispensingPolicy dispensingPolicy;
 
+    // Original constructor retained for existing code.
+    // Uses 10 as the default reorder level.
     public Medication(
             String name,
             BigDecimal price,
             int stock,
+            DispensingPolicy dispensingPolicy
+    ) {
+        this(name, price, stock, 10, dispensingPolicy);
+    }
+
+    // New constructor that accepts a custom reorder level.
+    public Medication(
+            String name,
+            BigDecimal price,
+            int stock,
+            int reorderLevel,
             DispensingPolicy dispensingPolicy
     ) {
         if (name == null || name.isBlank()) {
@@ -37,10 +52,15 @@ public class Medication {
             throw new IllegalArgumentException("Stock cannot be negative");
         }
 
+        if (reorderLevel < 0) {
+            throw new IllegalArgumentException("Reorder level cannot be negative");
+        }
+
         this.id = COUNTER.getAndIncrement();
         this.name = name;
         this.price = price;
         this.stock = stock;
+        this.reorderLevel = reorderLevel;
         this.dispensingPolicy = dispensingPolicy;
     }
 
@@ -58,6 +78,14 @@ public class Medication {
 
     public int getStock() {
         return stock;
+    }
+
+    public int getReorderLevel() {
+        return reorderLevel;
+    }
+
+    public boolean isLowStock() {
+        return stock <= reorderLevel;
     }
 
     public MedicationCategory getCategory() {
